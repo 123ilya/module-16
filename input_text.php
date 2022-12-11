@@ -1,6 +1,7 @@
 <?php
+    
     require_once 'autoload.php';
-
+    
     use PHPMailer\PHPMailer\PHPMailer;
     use PHPMailer\PHPMailer\SMTP;
     use PHPMailer\PHPMailer\Exception;
@@ -34,38 +35,38 @@
     </body>
     </html>
 <?php
-if ($_POST['text'] and $_POST['author']) {
-    $telegraphText = new TelegraphText($_POST['author'], $_POST['author']);
-    $fileStorage = new FileStorage();
-    $fileStorage->create($telegraphText);
+    if ($_POST['text'] and $_POST['author']) {
+        $telegraphText = new TelegraphText($_POST['author'], $_POST['author']);
+        $fileStorage = new FileStorage();
+        $fileStorage->create($telegraphText);
 //        Проверяем заполнено ли поле email в форме. Если да, то отправляем текст на это email.
-    if ($_POST['email']) {
-        $addressee = $_POST['email'];
-        $text = $_POST['text'];
-        $mail = new PHPMailer();
-        $mail->isSMTP();                   // Отправка через SMTP
-        $mail->Host = 'smtp.yandex.ru';  // Адрес SMTP сервера
-        $mail->SMTPAuth = true;          // Enable SMTP authentication
-        $mail->Username = 'ilyasobolev8400';       // ваше имя пользователя (без домена и @)
-        $mail->Password = 'dvqyslasbjrcqame';    // ваш пароль
-        $mail->SMTPSecure = 'ssl';         // шифрование ssl
-        $mail->Port = 465;               // порт подключения
-
-        $mail->setFrom('ilyasobolev8400@yandex.ru', 'ilya');    // от кого
-        $mail->addAddress($addressee, 'addressee'); // кому
-
-        $mail->Subject = 'Тест';
-        $mail->msgHTML(
-            "<html><body>
-                <h1>Здравствуйте!</h1>
-                <p>$text</p>
-                </html></body>"
-        );
-        if ($mail->send()) {
-            echo 'Письмо отправлено!';
-        } else {
-            echo 'Ошибка: ' . $mail->ErrorInfo;
+        if ($_POST['email']) {
+            $addressee = $_POST['email'];
+            $text = $_POST['text'];
+            $mail = new PHPMailer(TRUE);
+//        ---
+            try {
+                $mail->isSMTP();                   // Отправка через SMTP
+                $mail->Host = 'smtp.yandex.ru';  // Адрес SMTP сервера
+                $mail->SMTPAuth = true;          // Enable SMTP authentication
+                $mail->Username = 'ilyasobolev8400';       // ваше имя пользователя (без домена и @)
+                $mail->Password = 'dvqyslasbjrcqame';    // ваш пароль
+                $mail->SMTPSecure = 'ssl';         // шифрование ssl
+                $mail->Port = 465;               // порт подключения
+                
+                $mail->setFrom('ilyasobolev8400@yandex.ru', 'ilya');    // от кого
+                $mail->addAddress($addressee, 'addressee'); // кому
+//            content
+                $mail->isHTML(true);
+                $mail->Subject = 'Тест';
+                $mail->Body = $text;
+                $mail->AltBody = $text;
+                $mail->send();
+                echo 'Письмо отправлено!!!';
+            } catch (Exception $e) {
+                echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+            }
+//            -----
         }
     }
-}
 
