@@ -3,7 +3,6 @@
     require_once 'autoload.php';
     
     use PHPMailer\PHPMailer\PHPMailer;
-    use PHPMailer\PHPMailer\SMTP;
     use PHPMailer\PHPMailer\Exception;
 
 ?>
@@ -13,10 +12,11 @@
     <head>
         <meta charset="UTF-8">
         <title>Форма для отправки текстов</title>
+        <link rel="stylesheet" href="style.css">
     </head>
     <body>
-    <h1>Форма для отправки текстов в "ТЕЛЕГРАФ" </h1>
-    <form method="post" action="input_text.php">
+    <h1 class="item1">Форма для отправки текстов в "ТЕЛЕГРАФ" </h1>
+    <form class="item2" method="post" action="input_text.php">
         <label>Автор:
             <input type="text" name="author">
         </label>
@@ -43,7 +43,7 @@
         if ($_POST['email']) {
             $addressee = $_POST['email'];
             $text = $_POST['text'];
-            $mail = new PHPMailer(TRUE);
+            $mail = new PHPMailer(true);
 //        ---
             try {
                 $mail->isSMTP();                   // Отправка через SMTP
@@ -57,16 +57,20 @@
                 $mail->setFrom('ilyasobolev8400@yandex.ru', 'ilya');    // от кого
                 $mail->addAddress($addressee, 'addressee'); // кому
 //            content
-                $mail->isHTML(true);
+                $mail->isHTML();
                 $mail->Subject = 'Тест';
                 $mail->Body = $text;
                 $mail->AltBody = $text;
                 $mail->send();
-                echo 'Письмо отправлено!!!';
+                echo '<div class="message item3 ok"><span> Письмо отправлено!!!</span></div>';
             } catch (Exception $e) {
-                echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+                echo "<div class='message item3 error'><span>Сообщение не доставленно. Ошибка: $mail->ErrorInfo</span></div>";
             }
 //            -----
         }
     }
+    unset($_POST['text']);
+    unset($_POST['author']);
+    unset($_POST['email']);
+    
 

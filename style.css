@@ -1,0 +1,54 @@
+body {
+    background-color: #d3d3d3;
+    display: grid;
+    grid-template-areas:
+            "message"
+'header'
+"form";
+    justify-items: center;
+}
+
+h1 {
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+label {
+    margin: 10px;
+}
+
+.message {
+    display: flex;
+    height: 300px;
+    width: 300px;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+}
+.error {
+    background-color: red;
+    font-weight: bold;
+}
+.ok {
+    background-color: chartreuse;
+}
+
+.item1 {
+}
+
+.item1 {
+    grid-area: header;
+}
+
+.item2 {
+    grid-area: form;
+}
+
+.item3 {
+    grid-area: message;
+}
