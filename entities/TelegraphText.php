@@ -16,6 +16,10 @@ class TelegraphText
     }
 
 // 'Волшебный сеттер' для полей 'author', 'slug', 'published'.
+
+    /**
+     * @throws Exception
+     */
     public function __set($name, $value)
     {
         if ($name == 'author') {
@@ -36,9 +40,13 @@ class TelegraphText
             }
         }
         if ($name == 'text') {
+//                Выбрасываем Exception, если количество симвовов текста меньше 1 и больше 500.
+//                Перехватывать буду в input_text.php
+            if (strlen($value) < 1 or strlen($value) > 500) {
+                throw new Exception("Количество символов не соответствует допустимому");
+            }
             $this->text = $value;
             $this->storeText();
-            echo '111';
         }
     }
 
@@ -84,9 +92,17 @@ class TelegraphText
         }
     }
 
+    /**
+     * @throws Exception
+     */
     public function editText($title, $text): void//Изменяет содержимое полей объекта title и text
     {
         $this->title = $title;
+        if (strlen($text) < 1 or strlen($text) > 500) {
+            //                Выбрасываем Exception, если количество симвовов текста меньше 1 и больше 500.
+//                Перехватывать буду в input_text.php
+            throw new Exception("Количество символов не соответствует допустимому");
+        }
         $this->text = $text;
     }
 }
