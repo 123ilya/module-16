@@ -5,6 +5,7 @@
     use PHPMailer\PHPMailer\PHPMailer;
     use PHPMailer\PHPMailer\Exception;
 
+
 ?>
 
     <!DOCTYPE html>
@@ -37,6 +38,13 @@
 <?php
     if ($_POST['text'] and $_POST['author']) {
         $telegraphText = new TelegraphText($_POST['author'], $_POST['author']);
+        try {
+            $telegraphText->editText('', $_POST['text']);
+        } catch (\Exception $e) {
+            $message=$e->getMessage();
+            echo "<div class='telegraphText message'>$message</div>";
+        }//Передаём текст, полученный из формы в объект
+        
         $fileStorage = new FileStorage();
         $fileStorage->create($telegraphText);
 //        Проверяем заполнено ли поле email в форме. Если да, то отправляем текст на это email.
@@ -69,8 +77,5 @@
 //            -----
         }
     }
-    unset($_POST['text']);
-    unset($_POST['author']);
-    unset($_POST['email']);
-    
+ 
 

@@ -52,3 +52,9 @@ label {
 .item3 {
     grid-area: message;
 }
+.telegraphText {
+    font-weight: bold;
+    background-color: hotpink;
+    text-align: center;
+
+}
